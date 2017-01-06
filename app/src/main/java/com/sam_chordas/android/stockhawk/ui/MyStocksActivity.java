@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.sam_chordas.android.stockhawk.R;
@@ -84,8 +85,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+                Intent intent = new Intent(MyStocksActivity.this,DetailStockActivity.class);
+                TextView textView = (TextView) v.findViewById(R.id.stock_symbol);
+                intent.putExtra(QuoteColumns.SYMBOL,textView.getText());
+                MyStocksActivity.this.startActivity(intent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
@@ -135,8 +138,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     mTitle = getTitle();
     if (isConnected){
-      long period = 3600L;
-      long flex = 10L;
+      long period = 1;
+      long flex = 1L;
       String periodicTag = "periodic";
 
       // create a periodic task to pull stocks once every hour after the app has been opened. This
@@ -144,7 +147,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       PeriodicTask periodicTask = new PeriodicTask.Builder()
           .setService(StockTaskService.class)
           .setPeriod(period)
-          .setFlex(flex)
           .setTag(periodicTag)
           .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
           .setRequiresCharging(false)
