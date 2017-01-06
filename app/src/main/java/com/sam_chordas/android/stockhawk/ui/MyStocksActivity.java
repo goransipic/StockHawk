@@ -85,7 +85,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                Intent intent = new Intent(MyStocksActivity.this,DetailStockActivity.class);
+                Intent intent = new Intent(MyStocksActivity.this,DetailStocksActivity.class);
                 TextView textView = (TextView) v.findViewById(R.id.stock_symbol);
                 intent.putExtra(QuoteColumns.SYMBOL,textView.getText());
                 MyStocksActivity.this.startActivity(intent);
@@ -138,8 +138,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     mTitle = getTitle();
     if (isConnected){
-      long period = 1;
-      long flex = 1L;
+      long period = 3600L;
+      long flex = 10L;
       String periodicTag = "periodic";
 
       // create a periodic task to pull stocks once every hour after the app has been opened. This
