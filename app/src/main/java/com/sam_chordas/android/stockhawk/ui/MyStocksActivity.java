@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -99,7 +100,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     fab.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (isConnected){
-          new MaterialDialog.Builder(mContext).title(R.string.symbol_search)
+          new MaterialDialog.Builder(mContext).title(R.string.symbol_search).theme(Theme.LIGHT)
               .content(R.string.content_test)
               .inputType(InputType.TYPE_CLASS_TEXT)
               .input(R.string.input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
