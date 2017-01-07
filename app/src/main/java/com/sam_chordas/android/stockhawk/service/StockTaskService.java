@@ -2,10 +2,12 @@ package com.sam_chordas.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
@@ -32,7 +34,7 @@ public class StockTaskService extends GcmTaskService{
   private Context mContext;
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
-
+  public static final String BROADCAST_ACTION = "com.example.android.threadsample.BROADCAST";
   public StockTaskService(){}
 
   public StockTaskService(Context context){
@@ -112,7 +114,9 @@ public class StockTaskService extends GcmTaskService{
       urlString = urlStringBuilder.toString();
       try{
         getResponse = fetchData(urlString);
-        if (getResponse == null){
+        if (!Utils.isQuoteSymbolWrong(getResponse)){
+          Intent intent = new Intent(BROADCAST_ACTION);
+          LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
           return GcmNetworkManager.RESULT_FAILURE;
         }
         result = GcmNetworkManager.RESULT_SUCCESS;

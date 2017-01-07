@@ -89,7 +89,7 @@ public class DetailStocksActivity extends AppCompatActivity implements
         xAxis.enableGridDashedLine(10f, 10f, 0f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
-
+        xAxis.setTextColor(Color.LTGRAY);
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         //leftAxis.setAxisMaximum(200f);
@@ -100,7 +100,7 @@ public class DetailStocksActivity extends AppCompatActivity implements
 
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
-
+        leftAxis.setTextColor(Color.LTGRAY);
         mChart.getAxisRight().setEnabled(false);
 
         //mChart.getViewPortHandler().setMaximumScaleY(2f);
@@ -178,8 +178,9 @@ public class DetailStocksActivity extends AppCompatActivity implements
             // set the line to be drawn like this "- - - - - -"
             set1.enableDashedLine(10f, 5f, 0f);
             set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.BLACK);
-            set1.setCircleColor(Color.BLACK);
+            set1.setColor(Color.WHITE);
+            set1.setValueTextColor(Color.LTGRAY);
+            set1.setCircleColor(Color.LTGRAY);
             set1.setLineWidth(1f);
             set1.setCircleRadius(3f);
             set1.setDrawCircleHole(false);

@@ -1,13 +1,17 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -37,6 +41,8 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
+import static com.sam_chordas.android.stockhawk.service.StockTaskService.BROADCAST_ACTION;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
   /**
@@ -54,6 +60,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  private DownloadStateReceiver mReceiver;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mContext = this;
     ConnectivityManager cm =
         (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-
+    mReceiver = new DownloadStateReceiver();
     NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
     isConnected = activeNetwork != null &&
         activeNetwork.isConnectedOrConnecting();
@@ -163,6 +170,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onResume() {
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+
+    LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,new IntentFilter(BROADCAST_ACTION));
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
   }
 
   public void networkToast(){
@@ -224,6 +240,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   @Override
   public void onLoaderReset(Loader<Cursor> loader){
     mCursorAdapter.swapCursor(null);
+  }
+
+  public class DownloadStateReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      Toast.makeText(context, R.string.wrong_symbol,Toast.LENGTH_LONG).show();
+    }
   }
 
 }

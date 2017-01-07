@@ -48,6 +48,24 @@ public class Utils {
     return batchOperations;
   }
 
+  public static boolean isQuoteSymbolWrong(String JSON){
+    JSONObject jsonObject = null;
+    String bid = null;
+    try {
+      jsonObject = new JSONObject(JSON);
+      if (jsonObject != null && jsonObject.length() != 0){
+        bid = jsonObject
+                .getJSONObject("query")
+                .getJSONObject("results")
+                .getJSONObject("quote").getString("Bid");
+      }
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return bid == null;
+  }
+
   public static String truncateBidPrice(String bidPrice){
     bidPrice = String.format("%.2f", Float.parseFloat(bidPrice));
     return bidPrice;
