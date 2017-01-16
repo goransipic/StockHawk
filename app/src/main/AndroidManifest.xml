@@ -18,7 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:name=".App"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true">
         <activity
             android:name=".ui.MyStocksActivity"
             android:label="@string/app_name">
@@ -42,9 +43,26 @@
         <provider
             android:name=".data.generated.QuoteProvider"
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".ui.DetailStocksActivity" />
+
+        <receiver android:name=".widget.StockHawkWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget" />
+        </receiver>
+
+        <service android:name=".widget.WidgetUpdateService" />
+
+        <service android:name=".widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
     </application>
 
 </manifest>

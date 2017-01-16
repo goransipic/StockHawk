@@ -203,7 +203,7 @@ public class DetailStocksActivity extends AppCompatActivity implements
 
             // create a data object with the datasets
             LineData dataChart = new LineData(dataSets);
-
+            dataChart.setDrawValues(false);
             // set data
             mChart.setData(dataChart);
         }

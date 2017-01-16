@@ -15,6 +15,7 @@ import com.google.android.gms.gcm.TaskParams;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -114,7 +115,7 @@ public class StockTaskService extends GcmTaskService{
       urlString = urlStringBuilder.toString();
       try{
         getResponse = fetchData(urlString);
-        if (!Utils.isQuoteSymbolWrong(getResponse)){
+        if (Utils.isQuoteSymbolWrong(getResponse)){
           Intent intent = new Intent(BROADCAST_ACTION);
           LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
           return GcmNetworkManager.RESULT_FAILURE;
@@ -130,6 +131,8 @@ public class StockTaskService extends GcmTaskService{
           }
           mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
+          Intent intent = new Intent("android.appwidget.action.APPWIDGET_UPDATE");
+          mContext.sendBroadcast(intent);
         }catch (RemoteException | OperationApplicationException e){
           Log.e(LOG_TAG, "Error applying batch insert", e);
         }

@@ -11,4 +11,6 @@
     <string name="input_prefill"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="wrong_symbol">Wrong Stock symbol</string>
+    <string name="empty_view_text">Empty List</string>
+    <string name="add_stock_symbol">Add stock symbol</string>
 </resources>
