@@ -70,7 +70,19 @@ public class Utils {
                     }
                 }
                 if (o instanceof JSONArray) {
-                    isWrong = false;
+                    JSONArray jsonArray = ((JSONArray) o);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObjectTemp = (JSONObject) jsonArray.get(i);
+                        if (jsonObjectTemp.has("Bid")) {
+                            isWrong = (jsonObjectTemp).isNull("Bid");
+                            if (isWrong == true){
+                                break;
+                            }else {
+                                isWrong = false;
+                            }
+                        }
+                    }
                 }
             }
 
